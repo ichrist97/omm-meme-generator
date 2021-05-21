@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Express Server",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/project/backend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start"]
+    },
+    {
+      "name": "React Server",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/project/meme-generator",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run-script", "start"]
+    },
+    {
+      "name": "React Client",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3001",
+      "webRoot": "${workspaceFolder}/project/meme-generator"
+    }
+  ]
+}

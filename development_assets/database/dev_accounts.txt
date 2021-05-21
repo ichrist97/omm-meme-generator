@@ -1,0 +1,17 @@
+Accounts:
+
+username,password
+admin,admin
+ivo,ivo
+august,august
+sebastian,sebastian
+sophia,sophia
+lmu,lmu
+tum,tum
+mememeister,mememeister
+john_cena,john_cena
+smartypants,smartypants
+post_melone,post_melone
+reactAddict,reactAddict
+nodeEnthusiast,nodeEnthusiast
+mongoEvangelist,mongoEvangelist

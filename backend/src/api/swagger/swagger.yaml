@@ -1,0 +1,1119 @@
+---
+openapi: 3.0.0
+info:
+  description: "OpenAPI specification for MemeGeneratorAPI"
+  version: "1.0.0"
+  title: "Meme Generator API"
+paths:
+  /login/:
+    post:
+      summary: "Login"
+      description: "Login with username and password to get JWT token"
+      tags:
+        - Authentication
+      operationId: "login"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              example:
+                id: "5fedbfc"
+                createdAt: "2020-12-31T12:10:54.912Z"
+                username: "foo"
+                tokens:
+                  accessToken: "accessToken"
+                  refreshToken: "refreshToken"
+        403:
+          description: "Forbidden"
+        500:
+          description: "Internal server error"
+  /login/refresh/:
+    post:
+      summary: "Refresh"
+      description: "Get new access token by passing refresh token"
+      tags:
+        - Authentication
+      operationId: "refresh"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              example:
+                accessToken: "accessToken"
+        403:
+          description: "Forbidden"
+        500:
+          description: "Internal server error"
+  /login/register/:
+    post:
+      summary: "Register"
+      description: "Register new user"
+      tags:
+        - Authentication
+      operationId: "register"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: "Ok"
+        400:
+          description: "Bad Request - username or password missing"
+        500:
+          description: "Internal server error"
+  /login/logout/:
+    post:
+      summary: "Logout"
+      description: "Logout by invalidating refresh token"
+      tags:
+        - Authentication
+      operationId: "logout"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        200:
+          description: "Ok"
+        400:
+          description: "Bad Request - username or password missing"
+        500:
+          description: "Internal server error"
+  /login/user/:
+    get:
+      summary: "Get logged in user"
+      description: "Get logged in user"
+      security:
+        - bearerAuth: []
+      tags:
+        - Authentication
+      operationId: "loginUser"
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              example:
+                id: "5fedbfc"
+                createdAt: "2020-12-31T12:10:54.912Z"
+                username: "foo"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /templates/:
+    get:
+      summary: "Get templates saved in database"
+      description: "Returns public templates saved in the database and private templates of the logged in user"
+      security:
+        - bearerAuth: []
+      tags:
+        - Templates
+      operationId: "getTemplates"
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Max number of items
+        - in: query
+          name: type
+          schema:
+            type: string
+          description: Media type of template (image / video)
+        - in: query
+          name: access
+          schema:
+            type: string
+          description: Access level of template (public / private). Private template can only be accessed by the owner
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              example:
+                - id: "5fedbfc"
+                  name: "foo"
+                  url: "http://localhost:300/files/download/foo"
+                  access: "public"
+                  owner: "5fedbfce7b654149384be"
+                  mediaType: "image"
+                  likes:
+                    - "fce7b65414"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+    post:
+      summary: "Upload new template"
+      description: "Upload new template by file"
+      security:
+        - bearerAuth: []
+      tags:
+        - Templates
+      operationId: "uploadTemplate"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                access:
+                  type: string
+                  description: "Type of access: Public / Private / Unlisted"
+                name:
+                  type: string
+                  description: "Name of template"
+                template:
+                  type: string
+                  description: "Template file"
+                  format: binary
+              required:
+                - template
+      responses:
+        200:
+          description: "Template uploaded"
+          content:
+            application/json:
+              example:
+                msg: "File is uploaded"
+                template:
+                  id: "5fedbfc"
+                  name: "foo"
+                  url: "http://localhost:300/files/download/foo"
+                  access: "public"
+                  owner: "5fedbfce7b654149384be"
+                  mediaType: "image"
+                  createdAt: "2021-02-08T15:11:24.486Z"
+                  views: 0
+        400:
+          description: "No file uploaded"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /templates/template/{id}/:
+    get:
+      summary: "Get single template by id"
+      tags:
+        - Templates
+      operationId: "getSingleTemplate"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the template to get
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              example:
+                - id: "1234"
+                  name: "foo"
+                  url: "http://localhost:300/files/download/foo"
+                  access: "public"
+                  owner: "5fedbfce7b654149384be"
+                  mediaType: "image"
+                  createdAt: "2021-02-08T15:11:24.486Z"
+        400:
+          description: "Template does not exist"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /templates/imgflip/:
+    get:
+      summary: "Gets templates from imgflip api"
+      security:
+        - bearerAuth: []
+      tags:
+        - Templates
+      operationId: "getImgflipMemes"
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              example:
+                - id: "1234"
+                  name: "foo"
+                  url: "https://i.imgflip.com/30b1gx.jpg"
+                  access: "public"
+                  owner: "5fedbfce7b654149384be"
+                  mediaType: "image"
+                  createdAt: "2021-02-08T15:11:24.486Z"
+                  width: 1200
+                  height: 1200
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /templates/url/:
+    post:
+      summary: "Upload new template"
+      security:
+        - bearerAuth: []
+      description: "Upload new template by providing URL to an image file in the internet"
+      tags:
+        - Templates
+      operationId: "uploadTemplateByURL"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                access:
+                  type: string
+                  description: "Type of access: Public / Private / Unlisted"
+                name:
+                  type: string
+                  description: "Name of template"
+                url:
+                  type: string
+                  description: "URL to image file"
+              required:
+                - url
+      responses:
+        200:
+          description: "Template uploaded"
+          content:
+            application/json:
+              example:
+                msg: "File is uploaded"
+                template:
+                  id: "5fedbfc"
+                  name: "foo"
+                  url: "http://localhost:300/files/download/foo"
+                  access: "public"
+                  owner: "5fedbfce7b654149384be"
+                  mediaType: "image"
+                  createdAt: "2021-02-08T15:11:24.486Z"
+                  views: 0
+        400:
+          description: "No file uploaded"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /templates/screenshot/:
+    post:
+      summary: "Upload new template by screenshot"
+      security:
+        - bearerAuth: []
+      description: "Upload new template by providing link to a website and then take a screenshot of the website resulting in a new template"
+      tags:
+        - Templates
+      operationId: "uploadTemplateByScreenshot"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                access:
+                  type: string
+                  description: "Type of access: Public / Private / Unlisted"
+                name:
+                  type: string
+                  description: "Name of template"
+                url:
+                  type: string
+                  description: "URL to website of which the screenshot shall be taken"
+              required:
+                - url
+      responses:
+        200:
+          description: "Template uploaded"
+          content:
+            application/json:
+              example:
+                msg: "created new screenshot"
+                template:
+                  id: "5fedbfc"
+                  name: "foo"
+                  url: "http://localhost:300/files/download/foo"
+                  access: "public"
+                  owner: "5fedbfce7b654149384be"
+                  mediaType: "image"
+                  createdAt: "2021-02-08T15:11:24.486Z"
+                  views: 0
+        400:
+          description: "No file uploaded"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /templates/view/:
+    post:
+      summary: "Increase view count of template"
+      security:
+        - bearerAuth: []
+      description: "Increase view count of template"
+      tags:
+        - Templates
+      operationId: "viewTemplate"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                templateId:
+                  type: string
+                  description: "ID of template to be viewed"
+      responses:
+        200:
+          description: "Template viewed"
+          content:
+            application/json:
+              example:
+                msg: "View counter increased"
+        400:
+          description: "No template id provided"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /templates/like/:
+    post:
+      summary: "Like template"
+      security:
+        - bearerAuth: []
+      description: "Like template"
+      tags:
+        - Templates
+      operationId: "likeTemplate"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                templateId:
+                  type: string
+                  description: "ID of template to be liked"
+            examples:
+              Like:
+                value:
+                  templateId: "6001d0df29ca"
+              Unlike:
+                value:
+                  templateId: "6001d0df29ca"
+                  undo: true
+      responses:
+        200:
+          description: "Template liked"
+          content:
+            application/json:
+              examples:
+                Like:
+                  value:
+                    msg: "Like for meme got created"
+                    data:
+                      id: "5fedbfc"
+                      memeId: "d0df2"
+                      user: "345dfgd"
+                      isTemplate: true
+                      createdAt: "2021-02-08T15:17:23.462Z"
+                Unlike:
+                  value:
+                    msg: "Like was removed"
+        400:
+          description: "No template id provided"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /memes/:
+    get:
+      summary: "Get public memes"
+      tags:
+        - Memes
+      operationId: "getPublicMemes"
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Max number of items
+        - in: query
+          name: likes
+          schema:
+            type: integer
+          description: Min number of likes meme needs to have
+        - in: query
+          name: views
+          schema:
+            type: integer
+          description: Min number of views meme needs to have
+        - in: query
+          name: createdAfter
+          schema:
+            type: integer
+          description: Meme needs to created before this date
+        - in: query
+          name: createdBefore
+          schema:
+            type: integer
+          description: Meme needs to created after this date
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Name of meme includes this name
+        - in: query
+          name: template
+          schema:
+            type: string
+          description: Template of meme equals this template id
+        - in: query
+          name: tags
+          schema:
+            type: string
+          description: Tags of meme include these tags (JSON string of 1D-string-array)
+      responses:
+        200:
+          description: "successful operation"
+          content:
+            application/json:
+              example:
+                msg: "Ok"
+                data:
+                  - createdAt: "2021-01-14T16:42:53.842Z"
+                    views: 3
+                    url: "http://localhost:3000/files/download/6000748e"
+                    access: "public"
+                    mediaType: "image"
+                    template: "60007"
+                    captions:
+                      - text: "my caption"
+                        position:
+                          top: 0.5
+                          left: 0.4
+                          right: 0
+                          bottom: 0
+                        fontFace:
+                          fontSize: 40
+                          fontFamily: "Roboto"
+                          color: "white"
+                    id: "34534523"
+                    likes:
+                      - user: "foo"
+                        memeId: "34534523"
+                        createdAt: "2021-01-14T16:44:20.285Z"
+                        id: "54467567567"
+                    comments:
+                      - user: "foo"
+                        memeId: "34534523"
+                        createdAt: "2021-01-14T16:44:20.285Z"
+                        id: "54467567567"
+                        text: "my comment"
+                    tags:
+                      - "hello"
+                      - "world"
+        500:
+          description: "Internal server error"
+  /memes/user/{id}/:
+    get:
+      summary: "Get all memes of user"
+      description: "Gets all memes created by the user. These include all public, private and unlisted memes. The queried user must be the logged in user, otherwise access will be denied."
+      operationId: "getUserMemes"
+      security:
+        - bearerAuth: []
+      tags:
+        - Memes
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the user
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              example:
+                msg: "Ok"
+                data:
+                  - createdAt: "2021-01-14T16:42:53.842Z"
+                    views: 3
+                    url: "http://localhost:3000/files/download/6000748e"
+                    access: "public"
+                    mediaType: "image"
+                    template: "60007"
+                    captions:
+                      - text: "my caption"
+                        position:
+                          top: 0.5
+                          left: 0.4
+                          right: 0
+                          bottom: 0
+                        fontFace:
+                          fontSize: 40
+                          fontFamily: "Roboto"
+                          color: "white"
+                    id: "34534523"
+                    likes:
+                      - user: "foo"
+                        memeId: "34534523"
+                        createdAt: "2021-01-14T16:44:20.285Z"
+                        id: "54467567567"
+                    comments:
+                      - user: "foo"
+                        memeId: "34534523"
+                        createdAt: "2021-01-14T16:44:20.285Z"
+                        id: "54467567567"
+                        text: "my comment"
+                    tags:
+                      - "hello"
+                      - "world"
+        400:
+          description: "User was not provided or does not exist"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /memes/meme/:
+    post:
+      summary: "Create meme"
+      description: |
+        This route offers multiple possibilities to create memes:
+        - Static image memes
+        - Static video / gif memes
+        - Dynamic video / gif memes
+
+        For all types of memes use the single endpoint `Create meme`. There are example requests for each type of meme but they all use the same REST endpoint.
+
+        # Template
+
+        For all types of memes the template can be supplied as an `uploaded file` (png, jpg, gif, mp4) or the id string of a `template database reference`. Only when passing the template reference, then the template reference will be saved in the meme database. Otherwise the template reference in the meme will be null.
+
+        # Optional arguments
+
+        `access`:\
+        Can be `public`, `private`, `unlisted`. If not supplied, then access defaults to public.
+
+        `name`:\
+        Title of meme. If not supplied, then defaults to empty string.
+
+        `tags`:\
+        JSON string containing an array of strings (tags).
+
+        # Static image memes
+
+        The `template` must be an image file (png, jpg) or the reference to an image template in the database.
+
+        The `captions` in the request body must be an array containing a Caption object for each caption.
+
+        Example:
+        ```
+        [
+            {
+              "text": "my caption 1",
+              "position": {
+                "top": 0.5,
+                "left": 0.4,
+                "right": 0,
+                "bottom": 0
+              },
+              "fontFace": {
+                "fontSize": 40,
+                "fontFamily": "Roboto",
+                "fontStyle": "normal",
+                "fontWeight": "bold",
+                "color": "white",
+                "textStrokeColor": "black",
+                "textStrokeWidth": "1"
+              }
+            }
+          ]
+        ```
+
+        # Static video or gif memes
+
+        The `template` must be a video file (mp4, gif) or the reference to a video or gif template in the database.
+
+        The `captions` in the request body must be a **1D-array** containing a Caption object for each caption.
+
+        Example:
+        ```
+        [
+            {
+              "text": "my caption 1",
+              "position": {
+                "top": 0.5,
+                "left": 0.4,
+                "right": 0,
+                "bottom": 0
+              },
+              "fontFace": {
+                "fontSize": 40,
+                "fontFamily": "Roboto",
+                "fontStyle": "normal",
+                "fontWeight": "bold",
+                "color": "white",
+                "textStrokeColor": "black",
+                "textStrokeWidth": "1"
+              }
+            }
+          ]
+        ```
+
+        # Dynamic video or gif memes
+
+        The `template` must be a video file (mp4, gif) or the reference to a video or gif template in the database.
+
+        The `captions` in the request body must be an array of Caption objects with relative start end end times.
+
+        The `start` and `end` is the time range how long the caption should be rendered in the video expressed as a percentage of the video length. The end value must be greater than the start value. Example: The value `start: 0` and `end: 0.25` would render the caption from the start of the video until 25% length of the video.
+
+        Example:
+        ```
+          [
+            {
+              "text": "my caption set 1",
+              "position": {
+                "top": 0.5,
+                "left": 0.4,
+                "right": 0,
+                "bottom": 0
+              },
+              "fontFace": {
+                "fontSize": 40,
+                "fontFamily": "Roboto",
+                "fontStyle": "normal",
+                "fontWeight": "bold",
+                "color": "white",
+                "textStrokeColor": "black",
+                "textStrokeWidth": "1"
+              },
+              "start": 0
+              "end": 0.7
+            }
+          ],
+          [
+            {
+              "text": "my caption set 2",
+              "position": {
+                "top": 0.5,
+                "left": 0.4,
+                "right": 0,
+                "bottom": 0
+              },
+              "fontFace": {
+                "fontSize": 40,
+                "fontFamily": "Roboto",
+                "fontStyle": "normal",
+                "fontWeight": "bold",
+                "color": "white",
+                "textStrokeColor": "black",
+                "textStrokeWidth": "1"
+              },
+              "start": 0.5
+              "end": 1
+            }
+          ]
+        ```
+
+        # Fontface
+
+        The `fontface` inside of a `Caption` is optional. If not specified default values will be used.
+
+        ## Image memes
+
+        The following attributes for rendering text can be specified for images:
+
+        - fontSize
+        - fontFamily
+        - fontStyle
+        - fontWeight
+        - color
+        - textStrokeColor
+        - textStrokeWidth
+
+        ## Video / gif memes
+
+        The following attributes for rendering text can be specified for video. Unsupported attributes will be ignored.
+
+        - fontFamily
+        - fontSize
+        - color
+      operationId: "createMeme"
+      security:
+        - bearerAuth: []
+      tags:
+        - Memes
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                access:
+                  type: string
+                  description: "Type of access: Public / Private / Unlisted"
+                name:
+                  type: string
+                  description: "Name of meme"
+                template:
+                  type: string
+                  description: "Template file"
+                  format: binary
+                captions:
+                  type: string
+                  description: "JSON string of array containing caption objects"
+                tags:
+                  type: string
+                  description: "JSON string of array containing tags"
+                isDraft:
+                  type: string
+                  description: "JSON string of boolean value (\"true\", \"false\"), if this meme is a draft"
+              required:
+                - template
+                - captions
+      responses:
+        200:
+          description: "Meme got created"
+        400:
+          description: "No file uploaded or captions missing or invalid"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /memes/meme/{id}/:
+    get:
+      summary: "Get single meme by id"
+      operationId: "getSingleMeme"
+      security:
+        - bearerAuth: []
+      tags:
+        - Memes
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the meme to get
+      responses:
+        200:
+          description: "Ok"
+          content:
+            application/json:
+              example:
+                msg: "Ok"
+                data:
+                  createdAt: "2021-01-14T16:42:53.842Z"
+                  views: 3
+                  url: "http://localhost:3000/files/download/6000748e"
+                  access: "public"
+                  mediaType: "image"
+                  template: "60007"
+                  captions:
+                    - text: "my caption"
+                      position:
+                        top: 0.5
+                        left: 0.4
+                        right: 0
+                        bottom: 0
+                      fontFace:
+                        fontSize: 40
+                        fontFamily: "Roboto"
+                        color: "white"
+                  id: "34534523"
+                  likes:
+                    - user: "foo"
+                      memeId: "34534523"
+                      createdAt: "2021-01-14T16:44:20.285Z"
+                      id: "54467567567"
+                  comments:
+                    - user: "foo"
+                      memeId: "34534523"
+                      createdAt: "2021-01-14T16:44:20.285Z"
+                      id: "54467567567"
+                      text: "my comment"
+                  tags:
+                    - "hello"
+                    - "world"
+        400:
+          description: "Meme not existing or id not provided"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /memes/meme-collection/:
+    post:
+      summary: "Create meme collection"
+      description: "Create a meme collection in zip format containing a meme for each specified caption"
+      operationId: "createMemeCollection"
+      security:
+        - bearerAuth: []
+      tags:
+        - Memes
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                captions:
+                  type: string
+                  description: "JSON string of captions. See description for `Create meme`"
+                template:
+                  type: string
+                  description: "Template file"
+                  format: binary
+              required:
+                - template
+                - captions
+      responses:
+        200:
+          description: "Meme collection got created"
+        400:
+          description: "No file uploaded or captions missing"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /memes/filter-meme-collection/:
+    get:
+      summary: "Create meme collection by filtering"
+      description: "Create a meme collection in zip format containing memes meeting the specified filters"
+      operationId: "createFilterMemeCollection"
+      tags:
+        - Memes
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Max number of items
+        - in: query
+          name: likes
+          schema:
+            type: integer
+          description: Min number of likes meme needs to have
+        - in: query
+          name: views
+          schema:
+            type: integer
+          description: Min number of views meme needs to have
+        - in: query
+          name: createdAfter
+          schema:
+            type: integer
+          description: Meme needs to created before this date
+        - in: query
+          name: createdBefore
+          schema:
+            type: integer
+          description: Meme needs to created after this date
+        - in: query
+          name: force
+          schema:
+            type: boolean
+          description: Force download in browser
+      responses:
+        200:
+          description: "Meme collection got created"
+        500:
+          description: "Internal server error"
+  /memes/like/:
+    post:
+      summary: "Like a meme"
+      operationId: "likeMeme"
+      security:
+        - bearerAuth: []
+      tags:
+        - Memes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                memeId:
+                  type: string
+            examples:
+              Like:
+                value:
+                  memeId: "6000748e8"
+              Unlike:
+                value:
+                  memeId: "6000748e8"
+                  undo: true
+      responses:
+        200:
+          description: "Like got created"
+        400:
+          description: "Meme not existing"
+        500:
+          description: "Internal server error"
+  /memes/comment/:
+    post:
+      summary: "Comment a meme"
+      operationId: "commentMeme"
+      security:
+        - bearerAuth: []
+      tags:
+        - Memes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                memeId:
+                  type: string
+                text:
+                  type: string
+      responses:
+        200:
+          description: "Comment got created"
+        400:
+          description: "Meme not existing"
+        500:
+          description: "Internal server error"
+  /memes/view/:
+    post:
+      summary: "View a meme"
+      operationId: "viewMeme"
+      security:
+        - bearerAuth: []
+      tags:
+        - Memes
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                memeId:
+                  type: string
+      responses:
+        200:
+          description: "View counter increased"
+        400:
+          description: "Meme not existing"
+        500:
+          description: "Internal server error"
+  /memes/video/:
+    get:
+      summary: "Get a stream video of random memes"
+      operationId: "memeVideo"
+      security:
+        - bearerAuth: []
+      tags:
+        - Memes
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: "The number of memes to be included in the video (Default: 100)"
+      responses:
+        200:
+          description: "Ok"
+        206:
+          description: "Partial Content"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /files/download/{id}/:
+    get:
+      summary: "Download file by id"
+      tags:
+        - Files
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the file to get
+        - in: query
+          name: Authorization
+          schema:
+            type: string
+          description: Access token must supplied if accessed file is private
+      responses:
+        200:
+          description: "Ok"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal server error"
+  /files/upload/:
+    post:
+      summary: "Upload new file"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                img:
+                  type: string
+                  description: "file"
+                  format: binary
+              required:
+                - img
+      tags:
+        - Files
+      responses:
+        200:
+          description: "Ok"
+        400:
+          description: "No file uploaded"
+        500:
+          description: "Internal server error"
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT # optional, arbitrary value for documentation purposes

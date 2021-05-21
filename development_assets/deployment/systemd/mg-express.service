@@ -1,0 +1,14 @@
+[Unit]
+Description=Meme-Generator-Backend
+
+[Service]
+ExecStart=/usr/bin/node /var/www/uni/omm/memes/backend/build/app.js
+#Restart=on-failure
+Restart=no
+#User=my_linux_user
+#Group=my_linux_group
+Environment=APP_PORT=3000
+#WorkingDirectory=/var/www/node
+
+[Install]
+WantedBy=multi-user.target

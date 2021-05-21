@@ -1,0 +1,1048 @@
+{
+	"info": {
+		"_postman_id": "10eb6859-d49a-4905-8351-5c12ed129d73",
+		"name": "OMM-Meme-Generator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"foo\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZvbyIsImlhdCI6MTYxNDUzMTY4N30.hN1SGog45nuCF7clW4IMPS2-u4OMBho7Uadu0FKpgaI\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login/refresh",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register user",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"foo\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZvbyIsImlhdCI6MTYxNDUzMTY4NywiZXhwIjoxNjE0NTM1Mjg3fQ.u1CmRPxv_7mdwC2haz8dSMcrVQWC0zh54s9qbIHR9Bc\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/login/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/login/user",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"login",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Templates",
+			"item": [
+				{
+					"name": "GET single template by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/templates/template/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								"template",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "603b71658985c2093fdd3aa8"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET templates from database",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/templates/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET templates from imgflip",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/templates/imgflip",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								"imgflip"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload template",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "template",
+									"type": "file",
+									"src": "/C:/Users/ivoch/Downloads/templates/gif/1.gif"
+								},
+								{
+									"key": "name",
+									"value": "scarlet",
+									"type": "text"
+								},
+								{
+									"key": "access",
+									"value": "public",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/templates/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload template from URL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "url",
+									"value": "https://images.pexels.com/photos/4646677/pexels-photo-4646677.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "My url image name",
+									"type": "text"
+								},
+								{
+									"key": "access",
+									"value": "private",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/templates/url",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								"url"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload template from screenshot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "url",
+									"value": "https://www.google.de/",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "My screenshot image name",
+									"type": "text"
+								},
+								{
+									"key": "access",
+									"value": "private",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/templates/screenshot",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								"screenshot"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View  Template",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"templateId\": \"603b717d8985c2093fdd3aac\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/templates/view",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								"view"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like Template",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"templateId\": \"603b717d8985c2093fdd3aac\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/templates/like",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UnLike Template",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"templateId\": \"603b717d8985c2093fdd3aac\",\r\n    \"undo\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/templates/like",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"templates",
+								"like"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Memes",
+			"item": [
+				{
+					"name": "Create meme",
+					"item": [
+						{
+							"name": "Create meme",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "template",
+											"value": "6009be446acb8e03410a5e95",
+											"type": "text"
+										},
+										{
+											"key": "captions",
+											"value": "[\n  {\n    \"text\": \"yoo\"\n  },\n  {\n    \"text\": \"dog\"\n  }\n]",
+											"type": "text"
+										},
+										{
+											"key": "access",
+											"value": "unlisted",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "My meme name",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/memes/meme",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"memes",
+										"meme"
+									]
+								},
+								"description": " "
+							},
+							"response": []
+						},
+						{
+							"name": "Example: Static image meme",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "template",
+											"value": "6001d12229cafd02782b4e19",
+											"type": "text"
+										},
+										{
+											"key": "captions",
+											"value": "[\n    {\n      \"text\": \"set 1\",\n      \"position\": {\n        \"top\": 0.5,\n        \"left\": 0.4,\n        \"right\": 0,\n        \"bottom\": 0\n      },\n      \"fontFace\": {\n        \"fontSize\": 40,\n        \"fontFamily\": \"Roboto\",\n        \"fontStyle\": \"normal\",\n        \"fontWeight\": \"bold\",\n        \"color\": \"white\",\n        \"textStrokeColor\": \"black\",\n        \"textStrokeWidth\": \"1\"\n      }\n    }\n  ]",
+											"type": "text"
+										},
+										{
+											"key": "access",
+											"value": "public",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "My meme name",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/memes/meme",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"memes",
+										"meme"
+									]
+								},
+								"description": "This route offers multiple possibilites to create memes:\r\n\r\n# Image memes\r\n\r\n## By providing template file\r\nCreate an image meme by passing the binary of the template file (key=`template`)\r\n\r\n## By providing template id\r\nCreate an image meme by passing the id of the template as saved in the database (key=`template`)\r\n\r\n# Video memes\r\nCreate a video meme by passing the id of the template as saved in the database (key=`template`). But the id **must** point to a **video template**.\r\n\r\n## Static video memes\r\nFor the key `captions` pass a JSON-String containing a 1D-Array containing a `Caption` object or a 2D-Array containing a single 1D-Array.\r\n\r\nThe `Caption` object has the following attributes:\r\n- text (string - required)\r\n- position (string - optional) -> defines the position of the caption as percentage\r\n- fontFace (optional)\r\n\r\nExample:\r\n- [{\"text\": \"hello\", \"text\": \"world\"}]\r\n- [ [{\"text\": \"hello\", \"text\": \"world\"}] ]\r\n\r\n## Dynamic video memes\r\n\r\nFor the key `captions` pass a JSON-String containing an Array of `Caption` objects.\r\n\r\nExample:\r\n- [ [{\"text\": \"hello\", \"text\": \"world\"}], [{\"text\": \"foo\", \"text\": \"bar\"}] ]\r\n\r\n# Access\r\nEither `public` or `private` or `unlisted`"
+							},
+							"response": []
+						},
+						{
+							"name": "Example: Static video / gif meme",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "template",
+											"value": "6009f14a7fa0227a4d847f0e",
+											"type": "text"
+										},
+										{
+											"key": "captions",
+											"value": "[\n    {\n      \"text\": \"set 1\",\n      \"position\": {\n        \"top\": 0.5,\n        \"left\": 0.4,\n        \"right\": 0,\n        \"bottom\": 0\n      },\n      \"fontFace\": {\n        \"fontSize\": 40,\n        \"fontFamily\": \"Roboto\",\n        \"fontStyle\": \"normal\",\n        \"fontWeight\": \"bold\",\n        \"color\": \"white\",\n        \"textStrokeColor\": \"black\",\n        \"textStrokeWidth\": \"1\"\n      }\n    }\n  ]",
+											"type": "text"
+										},
+										{
+											"key": "access",
+											"value": "public",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "My meme name",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/memes/meme",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"memes",
+										"meme"
+									]
+								},
+								"description": "This route offers multiple possibilites to create memes:\r\n\r\n# Image memes\r\n\r\n## By providing template file\r\nCreate an image meme by passing the binary of the template file (key=`template`)\r\n\r\n## By providing template id\r\nCreate an image meme by passing the id of the template as saved in the database (key=`template`)\r\n\r\n# Video memes\r\nCreate a video meme by passing the id of the template as saved in the database (key=`template`). But the id **must** point to a **video template**.\r\n\r\n## Static video memes\r\nFor the key `captions` pass a JSON-String containing a 1D-Array containing a `Caption` object or a 2D-Array containing a single 1D-Array.\r\n\r\nThe `Caption` object has the following attributes:\r\n- text (string - required)\r\n- position (string - optional) -> defines the position of the caption as percentage\r\n- fontFace (optional)\r\n\r\nExample:\r\n- [{\"text\": \"hello\", \"text\": \"world\"}]\r\n- [ [{\"text\": \"hello\", \"text\": \"world\"}] ]\r\n\r\n## Dynamic video memes\r\n\r\nFor the key `captions` pass a JSON-String containing a 2D-Array containing **more than one** 1D-array of `Caption` objects.\r\n\r\nExample:\r\n- [ [{\"text\": \"hello\", \"text\": \"world\"}], [{\"text\": \"foo\", \"text\": \"bar\"}] ]\r\n\r\n# Access\r\nEither `public` or `private` or `unlisted`"
+							},
+							"response": []
+						},
+						{
+							"name": "Example: Dynamic video / gif meme",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "template",
+											"value": "6009f14a7fa0227a4d847f0e",
+											"type": "text"
+										},
+										{
+											"key": "captions",
+											"value": "[\n    {\n      \"text\": \"set 1\",\n      \"position\": {\n        \"top\": 0.5,\n        \"left\": 0.4,\n        \"right\": 0,\n        \"bottom\": 0\n      },\n      \"fontFace\": {\n        \"fontSize\": 40,\n        \"fontFamily\": \"Roboto\",\n        \"fontStyle\": \"normal\",\n        \"fontWeight\": \"bold\",\n        \"color\": \"white\",\n        \"textStrokeColor\": \"black\",\n        \"textStrokeWidth\": \"1\"\n      },\n      \"start\": 0,\n      \"end\": 0.25\n    },\n    {\n      \"text\": \"set 2\",\n      \"position\": {\n        \"top\": 0.7,\n        \"left\": 0.4,\n        \"right\": 0,\n        \"bottom\": 0\n      },\n      \"fontFace\": {\n        \"fontSize\": 40,\n        \"fontFamily\": \"Roboto\",\n        \"fontStyle\": \"normal\",\n        \"fontWeight\": \"bold\",\n        \"color\": \"white\",\n        \"textStrokeColor\": \"black\",\n        \"textStrokeWidth\": \"1\"\n      },\n      \"start\": 0.25,\n      \"end\": 0.5\n    }\n  ]\n",
+											"type": "text"
+										},
+										{
+											"key": "access",
+											"value": "public",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "My meme name",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/memes/meme",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"memes",
+										"meme"
+									]
+								},
+								"description": "This route offers multiple possibilites to create memes:\r\n\r\n# Image memes\r\n\r\n## By providing template file\r\nCreate an image meme by passing the binary of the template file (key=`template`)\r\n\r\n## By providing template id\r\nCreate an image meme by passing the id of the template as saved in the database (key=`template`)\r\n\r\n# Video memes\r\nCreate a video meme by passing the id of the template as saved in the database (key=`template`). But the id **must** point to a **video template**.\r\n\r\n## Static video memes\r\nFor the key `captions` pass a JSON-String containing a 1D-Array containing a `Caption` object or a 2D-Array containing a single 1D-Array.\r\n\r\nThe `Caption` object has the following attributes:\r\n- text (string - required)\r\n- position (string - optional) -> defines the position of the caption as percentage\r\n- fontFace (optional)\r\n\r\nExample:\r\n- [{\"text\": \"hello\", \"text\": \"world\"}]\r\n- [ [{\"text\": \"hello\", \"text\": \"world\"}] ]\r\n\r\n## Dynamic video memes\r\n\r\nFor the key `captions` pass a JSON-String containing a 2D-Array containing **more than one** 1D-array of `Caption` objects.\r\n\r\nExample:\r\n- [ [{\"text\": \"hello\", \"text\": \"world\"}], [{\"text\": \"foo\", \"text\": \"bar\"}] ]\r\n\r\n# Access\r\nEither `public` or `private` or `unlisted`"
+							},
+							"response": []
+						},
+						{
+							"name": "Create grid meme",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "img",
+											"type": "file",
+											"src": "/C:/Users/ivoch/Downloads/templates/Batman-Slapping-Robin.jpg"
+										},
+										{
+											"key": "captions",
+											"value": "[{\"text\": \"hello\", \"grid\":{\"gridRow\":1,\"gridCol\":2}},{\"text\": \"meme\", \"grid\":{\"gridRow\":1,\"gridCol\":0}}]",
+											"type": "text"
+										},
+										{
+											"key": "access",
+											"value": "public",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/memes/meme",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"memes",
+										"meme"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create and Get Meme collection",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "template",
+											"type": "file",
+											"src": "/C:/Users/ivoch/Downloads/templates/Batman-Slapping-Robin.jpg"
+										},
+										{
+											"key": "captions",
+											"value": "[{\"text\": \"hello\"},{\"text\": \"robin\"}]",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{host}}/memes/meme-collection",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"memes",
+										"meme-collection"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create and Get filtered Memes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/memes/filter-meme-collection?limit=5&force=true",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"memes",
+										"filter-meme-collection"
+									],
+									"query": [
+										{
+											"key": "likes",
+											"value": null,
+											"description": "Min number of likes for memes returned",
+											"disabled": true
+										},
+										{
+											"key": "views",
+											"value": null,
+											"description": "Min number of views for memes returned",
+											"disabled": true
+										},
+										{
+											"key": "createdAfter",
+											"value": null,
+											"description": "Return memes created after this date",
+											"disabled": true
+										},
+										{
+											"key": "createdBefore",
+											"value": null,
+											"description": "Return memes created before this date",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "5"
+										},
+										{
+											"key": "force",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "This route offers multiple possibilities to create memes:\n\n- Static image memes\n- Static video / gif memes\n- Dynamic video / gif memes\n\nFor all types of memes use the single endpoint `Create meme`. There are example requests for each type of meme but they all use the same REST endpoint.\n\n# Template\n\nFor all types of memes the template can be supplied as an `uploaded file` (png, jpg, gif, mp4) or the id string of a `template database reference`. Only when passing the template reference, then the template reference will be saved in the meme database. Otherwise the template reference in the meme will be null.\n\n# Optional arguments\n\n`access`:\\\nCan be `public`, `private`, `unlisted`. If not supplied, then access defaults to public.\n\n`name`:\\\nTitle of meme. If not supplied, then defaults to empty string.\n\n`tags`:\\\nJSON string containing an array of strings (tags).\n\n# Static image memes\n\nThe `template` must be an image file (png, jpg) or the reference to an image template in the database.\n\nThe `captions` in the request body must be a **1D-array** containing a Caption object for each caption.\n\nExample:\n```\n[\n    {\n      \"text\": \"my caption 1\",\n      \"position\": {\n        \"top\": 0.5,\n        \"left\": 0.4,\n        \"right\": 0,\n        \"bottom\": 0\n      },\n      \"fontFace\": {\n        \"fontSize\": 40,\n        \"fontFamily\": \"Roboto\",\n        \"fontStyle\": \"normal\",\n        \"fontWeight\": \"bold\",\n        \"color\": \"white\",\n        \"textStrokeColor\": \"black\",\n        \"textStrokeWidth\": \"1\"\n      }\n    }\n  ]\n```\n\n# Static video or gif memes\n\nThe `template` must be a video file (mp4, gif) or the reference to a video or gif template in the database.\n\nThe `captions` in the request body must be a **1D-array** containing a Caption object for each caption.\n\nExample:\n```\n[\n    {\n      \"text\": \"my caption 1\",\n      \"position\": {\n        \"top\": 0.5,\n        \"left\": 0.4,\n        \"right\": 0,\n        \"bottom\": 0\n      },\n      \"fontFace\": {\n        \"fontSize\": 40,\n        \"fontFamily\": \"Roboto\",\n        \"fontStyle\": \"normal\",\n        \"fontWeight\": \"bold\",\n        \"color\": \"white\",\n        \"textStrokeColor\": \"black\",\n        \"textStrokeWidth\": \"1\"\n      }\n    }\n  ]\n```\n\n# Dynamic video or gif memes\n\nThe `template` must be a video file (mp4, gif) or the reference to a video or gif template in the database.\n\nThe `captions` in the request body must be a **2D-array** containing a **1D-array** of Caption objects for each caption. Each 1D-array is caption set which gets displayed at a different time in the video. Each caption object in a 1D-array (caption set) must also contain a start and end attribute.\n\nThe `start` / `end` is the time range how long the caption should be rendered in the video expressed as a percentage of the video length. Example: The value `0.25` would render the caption from the start of the video or preceding caption set until 25% of the video.\n\nExample:\n```\n[\n  [\n    {\n      \"text\": \"my caption set 1\",\n      \"position\": {\n        \"top\": 0.5,\n        \"left\": 0.4,\n        \"right\": 0,\n        \"bottom\": 0\n      },\n      \"fontFace\": {\n        \"fontSize\": 40,\n        \"fontFamily\": \"Roboto\",\n        \"fontStyle\": \"normal\",\n        \"fontWeight\": \"bold\",\n        \"color\": \"white\",\n        \"textStrokeColor\": \"black\",\n        \"textStrokeWidth\": \"1\"\n      },\n      \"start\": 0.25\n,\n      \"end\": 1\n    }\n  ],\n  [\n    {\n      \"text\": \"my caption set 2\",\n      \"position\": {\n        \"top\": 0.5,\n        \"left\": 0.4,\n        \"right\": 0,\n        \"bottom\": 0\n      },\n      \"fontFace\": {\n        \"fontSize\": 40,\n        \"fontFamily\": \"Roboto\",\n        \"fontStyle\": \"normal\",\n        \"fontWeight\": \"bold\",\n        \"color\": \"white\",\n        \"textStrokeColor\": \"black\",\n        \"textStrokeWidth\": \"1\"\n      },\n      \"start\": 0,\n      \"end\": 1\n    }\n  ]\n]\n```\n\n# Fontface\n\nThe `fontface` inside of a `Caption` is optional. If not specified default values will be used.\n\n## Image memes\n\nThe following attributes for rendering text can be specified for images:\n\n- fontSize\n- fontFamily\n- fontStyle\n- fontWeight\n- color\n- textStrokeColor\n- textStrokeWidth\n\n## Video / gif memes\n\nThe following attributes for rendering text can be specified for video. Unsupported attributes will be ignored.\n\n- fontFamily\n- fontSize\n- color"
+				},
+				{
+					"name": "Get single meme by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/memes/meme/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"memes",
+								"meme",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "603b74448985c2093fdd3ad5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get public memes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/memes/?limit=2&likes=0&views=0&createdAfter=2020-02-01",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"memes",
+								""
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "2",
+									"description": "Max number of memes returned"
+								},
+								{
+									"key": "likes",
+									"value": "0",
+									"description": "Min number of likes for memes returned"
+								},
+								{
+									"key": "views",
+									"value": "0",
+									"description": "Min number of views for memes returned"
+								},
+								{
+									"key": "createdAfter",
+									"value": "2020-02-01",
+									"description": "Return memes created after this date"
+								},
+								{
+									"key": "createdBefore",
+									"value": "2020-12-31",
+									"description": "Return memes created before this date",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user memes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/memes/user/:userId",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"memes",
+								"user",
+								":userId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Meme",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"memeId\": \"6000749e802e657be45073fb\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/memes/view",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"memes",
+								"view"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like meme",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"memeId\": \"6000748e802e657be45073f9\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/memes/like",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"memes",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UnLike meme",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"memeId\": \"6000748e802e657be45073f9\",\r\n    \"undo\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/memes/like",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"memes",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment meme",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"memeId\": \"5fedc07e7b654149384beeb4\",\r\n    \"text\": \"made me laugh thanks\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/memes/comment",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"memes",
+								"comment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get video stream of memes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/memes/video?limit=1",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"memes",
+								"video"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Files",
+			"item": [
+				{
+					"name": "Download",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/files/download/:id?Authorization=Bearer {{token}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"download",
+								":id"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "Bearer {{token}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "603bd2648162b63794f533ec"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "img",
+									"type": "file",
+									"src": "/C:/Users/muell/IdeaProjects/20w-omm-group-tasks/project/development_assets/assets/templates/img/Batman-Slapping-Robin.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{host}}/files/upload",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"files",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "localhost:3000"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImZvbyIsImlhdCI6MTYxNDUzMTY4NywiZXhwIjoxNjE0NTM1Mjg3fQ.u1CmRPxv_7mdwC2haz8dSMcrVQWC0zh54s9qbIHR9Bc"
+		}
+	]
+}

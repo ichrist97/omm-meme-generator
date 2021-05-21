@@ -1,0 +1,41 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MG-Express-Client" type="NodeJSConfigurationType" path-to-js-file="build/app.js" working-dir="$PROJECT_DIR$/project/backend">
+    <method v="2">
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/project/lib/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="build" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/project/backend/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="build" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+    </method>
+  </configuration>
+  <configuration default="false" name="MG-Express-Server" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/project/backend/package.json" />
+    <command value="run" />
+    <scripts>
+      <script value="start" />
+    </scripts>
+    <node-interpreter value="project" />
+    <envs />
+    <method v="2">
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/project/lib/package.json" />
+        <command value="build" />
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+    </method>
+  </configuration>
+</component>

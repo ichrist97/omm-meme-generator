@@ -1,0 +1,32 @@
+# build environment
+FROM node:14 AS build
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Bundle app source code from frontend
+COPY ./meme-generator ./
+
+ARG REACT_APP_API_HOST
+ENV REACT_APP_API_HOST $REACT_APP_API_HOST
+ARG PUBLIC_URL
+ENV PUBLIC_URL $PUBLIC_URL
+
+# Build and link the shared library
+COPY ./lib/ ./lib/
+RUN cd lib \
+    && yarn install \
+    && yarn build \
+    && yarn link
+
+# Install dependencies & build html files
+RUN yarn link meme-generator-lib \
+    && yarn install \
+    && yarn run build
+
+# production environment
+# serve via nginx
+FROM nginx:stable-alpine AS serve
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
+
+CMD ["nginx", "-g", "daemon off;"]

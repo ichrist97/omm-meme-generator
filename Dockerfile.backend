@@ -1,0 +1,22 @@
+# build environment
+FROM node:14
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Bundle app source code from backend
+COPY ./backend ./
+
+# Build and link the shared library
+COPY ./lib/ ./lib/
+RUN cd lib \
+    && yarn install \
+    && yarn build \
+    && yarn link
+
+# Install dependencies
+RUN yarn link meme-generator-lib \
+    && yarn install
+
+# build and run app
+CMD ["yarn", "run", "start:prod"]

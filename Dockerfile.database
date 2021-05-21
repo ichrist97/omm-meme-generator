@@ -1,0 +1,4 @@
+FROM mongo
+
+COPY ./development_assets/database/meme-generator ./dump
+CMD mongorestore -h meme-generator-database:27017 --drop -d meme-generator ./dump
